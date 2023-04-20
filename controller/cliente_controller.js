@@ -8,35 +8,33 @@ function listar(req, res) {
     res.json(listaClientes);  
 }
 
-function buscarPorId(req, res) {    
-    //Obtem os dados request (e da URI)
+async function buscarPorId(req, res) {    
     const id = req.params.id;
-    console.log("ID:", id);
-    //Trata a funcionalidade de negocio
-    const cliente = clienteNegocio.buscarPorId(id);
-    //Gera o response adequadamente  
-    res.json(cliente);
+
+    try {
+
+        const cliente = await clienteNegocio.buscarPorId(id);
+        res.json(cliente);
+
+    } catch (error) {
+        
+        res.status(500).json({erro: error})
+        
+    }
 }
 
-function inserir(req, res) {    
-    //Obtem os dados request
+async function inserir(req, res) {    
     const cliente = req.body;
-    //Trata a funcionalidade de negocio
-    const clienteInserido = clienteNegocio.inserir(cliente);
-    //Gera o response adequadamente  
+    const clienteInserido = await clienteNegocio.inserir(cliente);
     res.status(201).json(clienteInserido);
 }
 
-function atualizar(req, res) {    
-    //Obtem os dados request
+async function atualizar(req, res) {    
     const id = req.params.id;
     const cliente = req.body;
-
-    //Trata a funcionalidade de negocio
-    clienteNegocio.atualizar(id,cliente);
-
-    //Gera o response adequadamente  
-    res.json({msg:"Cliente atualizado com sucesso!"});
+    
+    let newCliente = await clienteNegocio.atualizar(id,cliente);
+    res.status(200).json(newCliente);
 }
 
 function deletar(req, res) {    
