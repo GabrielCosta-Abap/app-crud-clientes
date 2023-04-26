@@ -5,5 +5,4 @@ create TABLE clientes (
 	telefone VARCHAR ( 30 ) not null
 );
 
-
 select * from clientes

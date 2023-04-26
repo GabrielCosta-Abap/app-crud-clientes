@@ -27,11 +27,23 @@ module.exports = {
             const res = await client.query(sQuery);
 
         await client.end();    
-        return res.rows   
+        return res.rows[0];
+    },
+
+    listarClientes: async (id) =>{
+        const client = new Client(conexao);
+        await client.connect();
+        
+            let sQuery = 'SELECT * FROM clientes ';
+
+            const res = await client.query(sQuery);
+
+        await client.end();    
+        return res.rows;   
     },
 
     atualizaCliente: async (id, cliente)=>{
-        const client = new Client(conexao)
+        const client = new Client(conexao);
         await client.connect();
 
         let sQuery = `UPDATE clientes SET `;
@@ -53,7 +65,8 @@ module.exports = {
 
         console.log(sQuery)
         const res = await client.query(sQuery, [cliente.nome, cliente.cpf, cliente.telefone, id]);
-        await client.end();   
+        await client.end();  
+        console.log(res);
         return res.rows;        
     }
 
